@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertifyService } from '../service/alertify.service';
 import { AuthService } from '../service/auth.service';
 
 @Component({
@@ -11,7 +12,7 @@ export class CategoryComponent implements OnInit {
   category: any;
   items: any;
 
-  constructor(private api: AuthService) { }
+  constructor(private api: AuthService,private alertify:AlertifyService) { }
 
   ngOnInit(): void {
     this.api.getAllCategory().subscribe((res: any) => {
@@ -32,9 +33,13 @@ export class CategoryComponent implements OnInit {
   }
 
   delete(id) {
-    this.api.categorydelete(id).subscribe(data => {
-      this.ngOnInit();
-    });
+    this.alertify.Confirm('Are you sure want to void this record ?', 'Delete', () => {
+      this.api.categorydelete(id).subscribe((data:any) => {
+        this.alertify.Success(data.message);
+        this.ngOnInit();
+      });
+    })
+    
   }
 
 }

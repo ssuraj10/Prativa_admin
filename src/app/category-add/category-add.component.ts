@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AlertifyService } from '../service/alertify.service';
 import { AuthService } from '../service/auth.service';
 
 @Component({
@@ -11,7 +12,7 @@ import { AuthService } from '../service/auth.service';
 export class CategoryAddComponent implements OnInit {
   Form: any;
 
-  constructor(private service:AuthService,   private router: Router,) { }
+  constructor(private service:AuthService,   private router: Router,private alertify: AlertifyService) { }
 
   ngOnInit(): void {
     this.Form = new FormGroup({
@@ -24,7 +25,7 @@ export class CategoryAddComponent implements OnInit {
    
     this.service.categoryAdd(this.Form.value).subscribe((res: any) => {
       
-      
+      this.alertify.Success(res.message);
       this.router.navigate(["./category"]);
     
       

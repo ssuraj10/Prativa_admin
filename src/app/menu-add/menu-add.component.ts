@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AlertifyService } from '../service/alertify.service';
 import { AuthService } from '../service/auth.service';
 
 @Component({
@@ -12,7 +13,7 @@ export class MenuAddComponent implements OnInit {
 
   Form: any;
 
-  constructor(private service: AuthService, private router: Router,) { }
+  constructor(private service: AuthService, private router: Router,private alertify:AlertifyService) { }
 
   ngOnInit(): void {
     this.Form = new FormGroup({
@@ -26,7 +27,7 @@ export class MenuAddComponent implements OnInit {
   onSubmit() {
 
     this.service.menuAdd(this.Form.value).subscribe((res: any) => {
-
+      this.alertify.Success(res.message);
 
       this.router.navigate(["./menu"]);
 
